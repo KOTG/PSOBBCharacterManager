@@ -1,0 +1,68 @@
+﻿@page "/DecodeFromFile"
+
+@using PSOBBCharacterDataDecoderWeb.Service.Implements
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using PSOBBCharacterDataDecoderWeb.Model
+@inject IWebHostEnvironment Environment
+@inject PSOBBCharacterDataFileService PsobbService
+@inject ILogger<DecodeFromFile> logger
+
+<PageTitle>PSOBBCharacterDecoder</PageTitle>
+
+<label>
+    FileSelection:
+    <InputFile OnChange="OnFileChange" multiple />
+</label>
+
+@if (Characters.Count() > 0)
+{
+    <RadzenDataGrid TItem="ItemModel" Data="Characters.ElementAt(0).Items" AllowFiltering="true" AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Filterable="true" Sortable="true" >
+                <Template Context="item">
+                    @item.ItemCode
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ItemModel" Title="Item" Filterable="true" Sortable="true" >
+                <Template Context="item">
+                    @item.Item
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Filterable="true" Sortable="true" >
+                <Template Context="item">
+                    @item.SlotNumber
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>    
+}
+
+@code {
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 20;
+
+    private IEnumerable<CharacterModel> Characters { get; set; } = new List<CharacterModel>();
+
+    /// <summary>
+    /// PSOBB character files change event.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        PsobbService.Initialize(e.GetMultipleFiles(maxAllowedFiles));
+
+        try
+        {
+            Characters = await PsobbService.GetCharactors();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Decode Error");
+        }
+
+    }
+}

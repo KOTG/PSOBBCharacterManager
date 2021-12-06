@@ -1,0 +1,99 @@
+﻿@page "/CharacterManager"
+
+@using PSOBBCharacterDataDecoderWeb.Service.Implements
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using PSOBBCharacterDataDecoderWeb.Model
+@inject IWebHostEnvironment Environment
+@inject PSOBBCharacterDataFileService PsobbService
+@inject ILogger<DecodeFromFile> logger
+
+<PageTitle>PSOBBCharacterManager</PageTitle>
+
+<label>
+    FileSelection:
+    <InputFile OnChange="OnFileChange" multiple />
+</label>
+
+@if (Characters.Count() > 0)
+{
+
+    <RadzenDataList PageSize="1" WrapItems="true" AllowPaging="true" PagerPosition="PagerPosition.Top"
+                Data="@Characters" TItem="CharacterModel">
+        <Template Context="character">
+            <RadzenCard>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>Name:</div>
+                        <b>@(character.Name + "testName")</b>
+                    </div>
+                    <div class="col-md-6">
+                        <div>Level:</div>
+                        <b>@(character.Level + " testLevel")</b>
+                        <div style="margin-top:20px">Experience:</div>
+                        <b>@(character.Experience + " testExp")</b>
+                        <div style="margin-top:20px">Race</div>
+                        <b>@(character.Race + " testRace")</b>
+                    </div>
+                </div>
+            </RadzenCard>
+
+            <div class="row">
+                <h3>Inventory</h3>
+                <RadzenDataGrid TItem="ItemModel" Data="character.Items" AllowFiltering="true" AllowSorting="true">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Property="ItemCode" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="Item" Property="Item" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Property="SlotNumber" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+
+            <div class="row">
+                <h3>Bank</h3>
+                <RadzenDataGrid TItem="ItemModel" Data="character.Banks" AllowFiltering="true" AllowSorting="true">
+                    <Columns>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Property="ItemCode" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="Item" Property="Item" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                        <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Property="SlotNumber" Filterable="true" Sortable="true">
+                        </RadzenDataGridColumn>
+                    </Columns>
+                </RadzenDataGrid>
+            </div>
+        </Template>
+    </RadzenDataList>
+}
+
+@code {
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 20;
+
+    private IEnumerable<CharacterModel> Characters { get; set; } = new List<CharacterModel>();
+
+    /// <summary>
+    /// PSOBB character files change event.
+    /// </summary>
+    /// <param name="e"></param>
+    /// <returns></returns>
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        PsobbService.Initialize(e.GetMultipleFiles(maxAllowedFiles));
+
+        try
+        {
+            Characters = await PsobbService.GetCharactors();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Decode Error");
+        }
+
+    }
+}

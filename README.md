@@ -7,6 +7,10 @@ I used this project as a reference.
 Requirement:
 * .NET 6.0
 
+Framework:
+* Blazor
+* Radzen https://blazor.radzen.com/
+
 Develop Tool:
 * Visual Studio 2022
 * Radzen https://blazor.radzen.com/

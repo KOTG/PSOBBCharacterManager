@@ -1,0 +1,29 @@
+﻿@using PSOBBCharacterDataDecoderWeb.Service.Implements
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using PSOBBCharacterDataDecoderWeb.Model
+@inject IWebHostEnvironment Environment
+
+<div class="row">
+    <h3>@GridName</h3>
+    <RadzenDataGrid TItem="ItemModel" Data="ItemList" AllowFiltering="true" AllowSorting="true">
+        <Columns>
+            <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Property="ItemCode" Filterable="true" Sortable="true">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ItemModel" Title="Item" Property="Item" Filterable="true" Sortable="true">
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Property="SlotNumber" Filterable="true" Sortable="true">
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</div>
+
+
+@code {
+    [Parameter]
+    public IEnumerable<ItemModel> ItemList { get; set; } = new List<ItemModel>();
+
+    [Parameter]
+    public string GridName { get; set; } = string.Empty;
+}

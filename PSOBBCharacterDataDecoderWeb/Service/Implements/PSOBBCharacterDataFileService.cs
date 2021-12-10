@@ -58,11 +58,13 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
             {
                 logger.LogInformation("target charactor binary file: " + binaryFile.Name);
 
-                string hexCharacter = await GetHexChracter(binaryFile);
+                var hexResult = await GetHexChracter(binaryFile);
+                string hexCharacter = hexResult.hexCharacter;
                 string slotNumber = GetSlotNumber(binaryFile.Name);
                 // read character info
                 var characterModel = new CharacterModel()
                 {
+                    Name = DecodeName(hexResult.bytes),
                     Items = DecodeInventory(hexCharacter, slotNumber),
                     Banks = DecodeCharacterBank(hexCharacter, slotNumber),
                 };
@@ -79,13 +81,13 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
             characters.Add(new CharacterModel()
             {
                 Name = "SHARE BANK",
-                Banks = DecodeShareBank(await GetHexChracter(shareBankFile), "SHARE"),
+                Banks = DecodeShareBank((await GetHexChracter(shareBankFile)).hexCharacter, "SHARE"),
             });
 
             return characters;
         }
 
-        private async Task<string> GetHexChracter(IBrowserFile file)
+        private async Task<(string hexCharacter, byte[] bytes)> GetHexChracter(IBrowserFile file)
         {
             var trustedFileNameForFileStorage = Path.GetRandomFileName();
             var parentPath = Path.Combine(Environment.ContentRootPath,
@@ -109,7 +111,7 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
             // read bytes
             byte[] bytes = File.ReadAllBytes(path);
 
-            return BitConverter.ToString(bytes).Replace("-", string.Empty);
+            return (BitConverter.ToString(bytes).Replace("-", string.Empty), bytes);
         }
 
         /// <summary>
@@ -128,10 +130,21 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
             return "unknown";
         }
 
-        private string DecodeName(string hexCharactor)
+        private string DecodeName(byte[] bytes)
         {
-            // TODO: implements
-            return null;
+            byte nullCharByte = 0;
+            var tracingBytes = bytes.ToList().GetRange(968, 20);
+            var decodingBytes = new List<byte>();
+            for (var i = 0; i < 20; i += 2)
+            {
+                // trace Null Character(End Point of Character Name)
+                if (tracingBytes[i] == nullCharByte)
+                    break;
+
+                decodingBytes.Add(tracingBytes[i]);
+                decodingBytes.Add(tracingBytes[i + 1]);
+            }
+            return System.Text.Encoding.Unicode.GetString(decodingBytes.ToArray());
         }
 
         private string DecodeRace(string hexCharactor)

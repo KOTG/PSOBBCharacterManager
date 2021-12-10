@@ -39,19 +39,22 @@
                 </div>
             </RadzenCard>
 
-            <div class="row">
-                <h3>Inventory</h3>
-                <RadzenDataGrid TItem="ItemModel" Data="character.Items" AllowFiltering="true" AllowSorting="true">
-                    <Columns>
-                        <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Property="ItemCode" Filterable="true" Sortable="true">
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="ItemModel" Title="Item" Property="Item" Filterable="true" Sortable="true">
-                        </RadzenDataGridColumn>
-                        <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Property="SlotNumber" Filterable="true" Sortable="true">
-                        </RadzenDataGridColumn>
-                    </Columns>
-                </RadzenDataGrid>
-            </div>
+            @if (character.Name != "SHARE BANK")
+            {
+                <div class="row">
+                    <h3>Inventory</h3>
+                    <RadzenDataGrid TItem="ItemModel" Data="character.Items" AllowFiltering="true" AllowSorting="true">
+                        <Columns>
+                            <RadzenDataGridColumn TItem="ItemModel" Title="ItemCode" Property="ItemCode" Filterable="true" Sortable="true">
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="ItemModel" Title="Item" Property="Item" Filterable="true" Sortable="true">
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="ItemModel" Title="SlotNumber" Property="SlotNumber" Filterable="true" Sortable="true">
+                            </RadzenDataGridColumn>
+                        </Columns>
+                    </RadzenDataGrid>
+                </div>
+            }
 
             <div class="row">
                 <h3>Bank</h3>

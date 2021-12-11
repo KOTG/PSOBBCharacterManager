@@ -3,10 +3,8 @@ using PSOBBCharactorGetter;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 using PSOBBCharacterDataDecoderWeb.Model;
 
 
@@ -17,8 +15,6 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
     /// </summary>
     public class PSOBBCharacterDataFileService : IPSOBBCharacterDataService
     {
-        IWebHostEnvironment Environment;
-
         private ILogger<PSOBBCharacterDataFileService> logger;
 
         private IEnumerable<IBrowserFile> FileInfos;
@@ -37,10 +33,9 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
         }
 
 
-        public PSOBBCharacterDataFileService(ILogger<PSOBBCharacterDataFileService> logger, IWebHostEnvironment env)
+        public PSOBBCharacterDataFileService(ILogger<PSOBBCharacterDataFileService> logger)
         {
             this.logger = logger;
-            this.Environment = env;
             FileInfos = new List<IBrowserFile>();
         }
 
@@ -89,29 +84,30 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
 
         private async Task<(string hexCharacter, byte[] bytes)> GetHexChracter(IBrowserFile file)
         {
-            var trustedFileNameForFileStorage = Path.GetRandomFileName();
-            var parentPath = Path.Combine(Environment.ContentRootPath,
-                    Environment.EnvironmentName, "unsafe_uploads");
+            //var trustedFileNameForFileStorage = Path.GetRandomFileName();
+            //var parentPath = Path.Combine(Environment.ContentRootPath,
+            //        Environment.EnvironmentName, "unsafe_uploads");
 
-            // create uploading folder
-            Directory.CreateDirectory(parentPath);
+            //// create uploading folder
+            //Directory.CreateDirectory(parentPath);
 
-            var path = Path.Combine(parentPath,
-                    trustedFileNameForFileStorage);
+            //var path = Path.Combine(parentPath,
+            //        trustedFileNameForFileStorage);
 
-            // copy to server
-            await using FileStream fileStream = File.Create(path);
-            await file.OpenReadStream(maxFileSize).CopyToAsync(fileStream);
-            fileStream.Flush();
-            fileStream.Close();
+            //// copy to server
+            //await using FileStream fileStream = File.Create(path);
+            //await file.OpenReadStream(maxFileSize).CopyToAsync(fileStream);
+            //fileStream.Flush();
+            //fileStream.Close();
 
-            // read bytes
-            byte[] bytes = File.ReadAllBytes(path);
+            //// read bytes
+            //byte[] bytes = File.ReadAllBytes(path);
 
-            // delete existing folder (recursive)
-            Directory.Delete(parentPath, true);
+            //// delete existing folder (recursive)
+            //Directory.Delete(parentPath, true);
 
-            return (BitConverter.ToString(bytes).Replace("-", string.Empty), bytes);
+            //return (BitConverter.ToString(bytes).Replace("-", string.Empty), bytes);
+            return (null, null);
         }
 
         /// <summary>

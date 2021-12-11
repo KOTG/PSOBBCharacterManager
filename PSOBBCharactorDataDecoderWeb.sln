@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSOBBCharactorDataDecoder", "PSOBBCharactorDataDecoder\PSOBBCharactorDataDecoder.csproj", "{82B69BBB-774E-45B4-8CAE-B46628C30B08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSOBBCharacterDataDecoderWeb", "PSOBBCharacterDataDecoderWeb\PSOBBCharacterDataDecoderWeb.csproj", "{2CBCC67D-2D52-49E1-B0DE-01B281039513}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSOBBCharacterDataDecoderWeb", "PSOBBCharacterDataDecoderWeb\PSOBBCharacterDataDecoderWeb.csproj", "{043ABC36-8F52-4D6A-A2E5-F798FE35B825}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{82B69BBB-774E-45B4-8CAE-B46628C30B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B69BBB-774E-45B4-8CAE-B46628C30B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B69BBB-774E-45B4-8CAE-B46628C30B08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CBCC67D-2D52-49E1-B0DE-01B281039513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2CBCC67D-2D52-49E1-B0DE-01B281039513}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2CBCC67D-2D52-49E1-B0DE-01B281039513}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CBCC67D-2D52-49E1-B0DE-01B281039513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{043ABC36-8F52-4D6A-A2E5-F798FE35B825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{043ABC36-8F52-4D6A-A2E5-F798FE35B825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{043ABC36-8F52-4D6A-A2E5-F798FE35B825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{043ABC36-8F52-4D6A-A2E5-F798FE35B825}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

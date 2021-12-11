@@ -3,10 +3,8 @@ using PSOBBCharactorGetter;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Hosting;
 using System;
 using System.IO;
-using Microsoft.AspNetCore.Hosting;
 using PSOBBCharacterDataDecoderWeb.Model;
 
 namespace PSOBBCharacterDataDecoderWeb.Service.Implements

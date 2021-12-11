@@ -1,0 +1,86 @@
+﻿@page "/WhoHas"
+
+@using PSOBBCharacterDataDecoderWeb.Service.Implements
+@using System
+@using System.IO
+@using Microsoft.AspNetCore.Hosting
+@using PSOBBCharacterDataDecoderWeb.Model
+@using PSOBBCharactorGetter
+@inject IWebHostEnvironment Environment
+@inject PSOBBCharacterSearchFileService PsobbService
+@inject ILogger<WhoHas> logger
+
+<PageTitle>PSOBBCharacterManager</PageTitle>
+
+<div class="row">
+    <div class="col">
+        <label>SearchItems(FuzzySearch)</label>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <RadzenAutoComplete Data=@AutoCompleteData TextProperty="Item" @bind-Value="Item" Style="width: 40%;" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" />
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <RadzenButton Click="@Search" ButtonStyle="ButtonStyle.Info">Search</RadzenButton>
+    </div>
+</div>
+
+<div class="row">
+    @if (SearchResult is not null)
+    {
+        <h3>SearchResult</h3>
+        <RadzenDataGrid TItem="SearchResultModel" Data="SearchResult" AllowFiltering="true" AllowSorting="true">
+            <Columns>
+                <RadzenDataGridColumn TItem="SearchResultModel" Title="CharacterName" Property="Character.Name" Filterable="true" Sortable="true">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="SearchResultModel" Title="SlotNumber" Property="Item.SlotNumber" Filterable="true" Sortable="true">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="SearchResultModel" Title="Item" Property="Item.Item" Filterable="true" Sortable="true">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="SearchResultModel" Title="WhereIsIt" Property="WhereIsIt" Filterable="true" Sortable="true">
+                </RadzenDataGridColumn>
+            </Columns>
+        </RadzenDataGrid>
+    }
+</div>
+
+@code {
+    [CascadingParameter]
+    public IEnumerable<CharacterModel> Characters { get; set; } = new List<CharacterModel>();
+
+    private IEnumerable<ItemModel> AutoCompleteData { get; set; } = new List<ItemModel>();
+
+    private IEnumerable<SearchResultModel> SearchResult { get; set; } = null;
+
+    private string Item { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        // Initialize ItemNameList
+
+        AutoCompleteData = ItemConfig.getItemCodes().Select(x => new ItemModel()
+            {
+                ItemCode = x.Key,
+                Item = x.Value,
+            });
+
+        PsobbService.Initialize(Characters);
+    }
+
+    private async Task Search()
+    {
+        try
+        {
+            SearchResult = await PsobbService.SearchItem(Item);
+
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "SearchError");
+        }
+    }
+}

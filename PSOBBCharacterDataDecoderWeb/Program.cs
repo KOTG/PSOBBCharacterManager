@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<PSOBBCharacterDataFileService>();
+builder.Services.AddSingleton<PSOBBCharacterSearchFileService>();
 
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 // builder.Logging.AddProvider(new Log4NetProvider());

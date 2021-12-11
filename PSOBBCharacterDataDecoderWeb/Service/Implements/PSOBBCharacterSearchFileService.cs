@@ -31,9 +31,12 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
         public Task<IEnumerable<SearchResultModel>> SearchItem(string item)
         {
             var resultList = new List<SearchResultModel>();
+
+            Func<ItemModel, bool> SearchPredicate = (i) => i.Item.Contains(item, StringComparison.OrdinalIgnoreCase);
+
             SearchingModels.ToList().ForEach(character =>
             {
-                character.Items?.Where(i => i.Item.Contains(item)).ToList().ForEach(i =>
+                character.Items?.Where(SearchPredicate).ToList().ForEach(i =>
                 {
                     resultList.Add(new SearchResultModel()
                     {
@@ -43,7 +46,7 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
                     });
                 });
 
-                character.Banks?.Where(i => i.Item.Contains(item)).ToList().ForEach(i =>
+                character.Banks?.Where(SearchPredicate).ToList().ForEach(i =>
                 {
                     resultList.Add(new SearchResultModel()
                     {
@@ -58,5 +61,6 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
 
             return Task.FromResult(result);
         }
+
     }
 }

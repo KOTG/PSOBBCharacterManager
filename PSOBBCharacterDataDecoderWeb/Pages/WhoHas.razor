@@ -19,7 +19,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <RadzenAutoComplete Data=@AutoCompleteData TextProperty="Item" @bind-Value="Item" Style="width: 40%;" />
+        <RadzenAutoComplete Data=@AutoCompleteData TextProperty="Item" @bind-Value="Item" Style="width: 40%;" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" />
     </div>
 </div>
 <div class="row">
@@ -35,6 +35,8 @@
         <RadzenDataGrid TItem="SearchResultModel" Data="SearchResult" AllowFiltering="true" AllowSorting="true">
             <Columns>
                 <RadzenDataGridColumn TItem="SearchResultModel" Title="CharacterName" Property="Character.Name" Filterable="true" Sortable="true">
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="SearchResultModel" Title="SlotNumber" Property="Item.SlotNumber" Filterable="true" Sortable="true">
                 </RadzenDataGridColumn>
                 <RadzenDataGridColumn TItem="SearchResultModel" Title="Item" Property="Item.Item" Filterable="true" Sortable="true">
                 </RadzenDataGridColumn>

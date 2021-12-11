@@ -93,9 +93,6 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
             var parentPath = Path.Combine(Environment.ContentRootPath,
                     Environment.EnvironmentName, "unsafe_uploads");
 
-            // delete existing folder (recursive)
-            Directory.Delete(parentPath, true);
-
             // create uploading folder
             Directory.CreateDirectory(parentPath);
 
@@ -110,6 +107,9 @@ namespace PSOBBCharacterDataDecoderWeb.Service.Implements
 
             // read bytes
             byte[] bytes = File.ReadAllBytes(path);
+
+            // delete existing folder (recursive)
+            Directory.Delete(parentPath, true);
 
             return (BitConverter.ToString(bytes).Replace("-", string.Empty), bytes);
         }
